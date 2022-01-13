@@ -21,7 +21,7 @@
         >
           <q-input
             outlined
-            v-model.number="randomnumber"
+            v-model.number="number"
             type="number"
             placeholder="eg - 1"
             class="number"
@@ -64,8 +64,8 @@ export default defineComponent({
   name: "PageIndex",
   setup() {
     return {
-      randomnumber: ref(""),
       randomNumber: ref(""),
+      number: ref(""),
       score: ref(20),
       highscore: ref(0),
     };
@@ -75,9 +75,9 @@ export default defineComponent({
   },
   methods: {
     checkNumber() {
-      if (this.randomnumber == null || this.randomnumber == "") {
+      if (this.number == null || this.number == "") {
         Notify.create("Please Enter Number");
-      } else if (this.randomnumber < this.randomNumber) {
+      } else if (this.number < this.randomNumber) {
         // Notify.create("Too Low");
         document.querySelector(".status").textContent = "Too Low";
         --this.score;
@@ -86,7 +86,8 @@ export default defineComponent({
           document.querySelector(".status").textContent = "😟 Game Over";
           document.querySelector("body").style.backgroundColor = "#ffc3c3";
         }
-      } else if (this.randomnumber > this.randomNumber) {
+        this.number = "";
+      } else if (this.number > this.randomNumber) {
         // Notify.create("Too High");
         document.querySelector(".status").textContent = "Too High";
         --this.score;
@@ -95,7 +96,8 @@ export default defineComponent({
           document.querySelector(".status").textContent = "😟 Game Over";
           document.querySelector("body").style.backgroundColor = "#ffc3c3";
         }
-      } else if (this.randomnumber === this.randomNumber) {
+        this.number = "";
+      } else if (this.number === this.randomNumber) {
         // Notify.create("You Win");
         document.querySelector(".status").textContent = "🏆 You won the game";
         document.querySelector("body").style.backgroundColor = "#c4ffc4";
@@ -103,14 +105,16 @@ export default defineComponent({
           this.highscore = this.score;
           document.querySelector(".highscore").textContent = this.highscore;
         }
+        document.querySelector(".randomnumber").style.filter = "blur(0)";
       }
     },
     reset() {
       document.querySelector(".status").textContent = "🚀 Let's Start Game";
       this.randomNumber = Math.trunc(Math.random() * 20 + 1);
-      this.randomnumber = "";
+      this.number = "";
       this.score = 20;
       document.querySelector("body").style.backgroundColor = "#fff";
+      document.querySelector(".randomnumber").style.filter = "blur(10px)";
     },
   },
 });
